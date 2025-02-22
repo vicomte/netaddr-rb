@@ -348,6 +348,22 @@ module NetAddr
 		end
 		return summd
 	end
-	
+
+	def Util.diff_peers(nets1, nets2)
+		new_nets_ary = Util.summ_peers([*nets1])
+		[*nets2].each do |diff_net|
+			tmp_nets_ary = []
+			new_nets_ary.each do |net|
+				if (net.rel(diff_net) || -1) >= 0
+					tmp_nets_ary = tmp_nets_ary + net.subtract_single_net(diff_net)
+				else
+					tmp_nets_ary << net
+				end
+			end
+			new_nets_ary = Util.summ_peers(tmp_nets_ary.uniq)
+		end
+		new_nets_ary
+	end
+
 	end # end class
 end # end module

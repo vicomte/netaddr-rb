@@ -229,10 +229,18 @@ module NetAddr
 		def version()
 			return 4
 		end
-		
+
+		# Subtract given net(s) from current net
+		def -(nets)
+			Util.diff_peers(self, [*nets])
+		end
+
+		# do a fill on self and remove the given net
+		def subtract_single_net(net)
+			self.clone.fill([net]) - [net]
+		end
 		
 		protected
-
 		# grow decreases the prefix length as much as possible without crossing a bit boundary.
 		def grow()
 			addr = self.network.addr

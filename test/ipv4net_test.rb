@@ -211,5 +211,13 @@ class TestIPv4Net < Test::Unit::TestCase
 		assert_nil(net7.summ(net8)) # consecutive but not within bit boundary
 		assert_nil(net9.summ(net10)) # within bit boundary, but not same size
 	end
-	
+
+	def test_diff
+		big_net = NetAddr::IPv4Net.parse('10.0.0.0/16')
+		little_net = NetAddr::IPv4Net.parse('10.0.100.0/26')
+		# none of the nets returned by diff should be or contain 'little_net'
+		assert_equal( 0, (big_net - little_net).select{|x| x.contains(little_net.network)}.count )
+		# number of hosts should be that of  1x /16 hosts - 1x /26 hosts
+		assert_equal( 65472,  (big_net - little_net).map(&:len).inject(0, :+))
+	end
 end

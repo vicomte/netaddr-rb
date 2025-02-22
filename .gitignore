@@ -1,5 +1,6 @@
 # ruby gems 
 *.gem
+.idea/
 
 #Personal task list
 tasks.md
